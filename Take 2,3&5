@@ -1,0 +1,383 @@
+TASK2:
+STUDENT GRADE CALCULATOR 
+
+import java.util.Scanner;
+public class StudentGradeCalculator {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+		
+        System.out.print("Enter the number of subjects: ");
+        int numberOfSubjects = scanner.nextInt();
+		
+        int[] marks = new int[numberOfSubjects];
+
+        // Input marks for each subject
+        for (int i = 0; i < numberOfSubjects; i++) {
+            System.out.print("Enter marks obtained in subject " + (i + 1) + " (out of 100): ");
+            marks[i] = scanner.nextInt();
+        }
+
+        int totalMarks = 0;
+        for (int mark : marks) {
+            totalMarks += mark;
+        }
+
+        // Calculate average percentage
+        double averagePercentage = (double) totalMarks / numberOfSubjects;
+
+        // Grade calculation
+        char grade;
+        if (averagePercentage >= 90) {
+            grade = 'A';
+        } else if (averagePercentage >= 80) {
+            grade = 'B';
+        } else if (averagePercentage >= 70) {
+            grade = 'C';
+        } else if (averagePercentage >= 60) {
+            grade = 'D';
+        } else if (averagePercentage >= 50) {
+            grade = 'E';
+        } else {
+            grade = 'F';
+        }
+
+        // Display results
+        System.out.println("\nResults:");
+        System.out.println("Total Marks: " + totalMarks);
+        System.out.println("Average Percentage: " + averagePercentage + "%");
+        System.out.println("Grade: " + grade);
+
+        scanner.close();
+    }
+}
+
+TASK 3:
+ATM INTERFACE
+
+
+import java.util.Scanner;
+class BankAccount {
+    private double balance;
+
+    // Constructor to initialize account balance
+    public BankAccount(double initialBalance) {
+        this.balance = initialBalance;
+        this.balance = initialBalance;
+    }
+
+    // Method to deposit an amount
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+            System.out.println("Deposit successful! New balance: $" + balance);
+        } else {
+            System.out.println("Invalid deposit amount!");
+        }
+    }
+
+    // Method to withdraw an amount
+    public void withdraw(double amount) {
+        if (amount > 0 && amount <= balance) {
+            balance -= amount;
+            System.out.println("Withdrawal successful! New balance: $" + balance);
+        } else if (amount > balance) {
+            System.out.println("Insufficient balance! Withdrawal failed.");
+        } else {
+            System.out.println("Invalid withdrawal amount!");
+        }
+    }
+
+    // Method to check the balance
+    public double checkBalance() {
+        return balance;
+    }
+}
+
+// Class to represent the ATM machine
+class ATM {
+    private BankAccount account;
+
+    // Constructor to initialize ATM with a user's bank account
+    public ATM(BankAccount account) {
+        this.account = account;
+    }
+
+    // Method to display the ATM interface
+    public void displayMenu() {
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+
+        do {
+            System.out.println("\n--- ATM Menu ---");
+            System.out.println("1. Check Balance");
+            System.out.println("2. Deposit Money");
+            System.out.println("3. Withdraw Money");
+            System.out.println("4. Exit");
+            System.out.print("Enter your choice: ");
+            choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.println("Your current balance is: $" + account.checkBalance());
+                    break;
+                case 2:
+                    System.out.print("Enter amount to deposit: $");
+                    double depositAmount = scanner.nextDouble();
+                    account.deposit(depositAmount);
+                    break;
+                case 3:
+                    System.out.print("Enter amount to withdraw: $");
+                    double withdrawAmount = scanner.nextDouble();
+                    account.withdraw(withdrawAmount);
+                    break;
+                case 4:
+                    System.out.println("Thank you for using the ATM. Goodbye!");
+                    break;
+                default:
+                    System.out.println("Invalid choice! Please try again.");
+            }
+        } while (choice != 4);
+
+        scanner.close();
+    }
+}
+
+// Main class to run the ATM program
+public class ATMInterface {
+    public static void main(String[] args) {
+        // Initialize the bank account with a starting balance
+        BankAccount account = new BankAccount(560.00);
+        ATM atm = new ATM(account);
+        atm.displayMenu();
+    }
+}
+
+
+
+TASK 5:
+STUDENT COURSE REGISTER SYSTEM 
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
+
+// Class to represent a Course
+class Course {
+    private String courseCode;
+    private String title;
+    private String description;
+    private int capacity;
+    private String schedule;
+    private ArrayList<String> registeredStudents;
+
+    public Course(String courseCode, String title, String description, int capacity, String schedule) {
+        this.courseCode = courseCode;
+        this.title = title;
+        this.description = description;
+        this.capacity = capacity;
+        this.schedule = schedule;
+        this.registeredStudents = new ArrayList<>();
+    }
+
+    public String getCourseCode() {
+        return courseCode;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public String getSchedule() {
+        return schedule;
+    }
+
+    public int getAvailableSlots() {
+        return capacity - registeredStudents.size();
+    }
+
+    public boolean registerStudent(String studentID) {
+        if (registeredStudents.size() < capacity) {
+            registeredStudents.add(studentID);
+            return true;
+        }
+        return false;
+    }
+
+    public void dropStudent(String studentID) {
+        registeredStudents.remove(studentID);
+    }
+
+    public boolean isStudentRegistered(String studentID) {
+        return registeredStudents.contains(studentID);
+    }
+
+    public void displayCourseDetails() {
+        System.out.println("Course Code: " + courseCode);
+        System.out.println("Title: " + title);
+        System.out.println("Description: " + description);
+        System.out.println("Schedule: " + schedule);
+        System.out.println("Capacity: " + capacity);
+        System.out.println("Available Slots: " + getAvailableSlots());
+        System.out.println("--------------------------");
+    }
+}
+
+// Class to represent a Student
+class Student {
+    private String studentID;
+    private String name;
+    private ArrayList<Course> registeredCourses;
+
+    public Student(String studentID, String name) {
+        this.studentID = studentID;
+        this.name = name;
+        this.registeredCourses = new ArrayList<>();
+    }
+
+    public String getStudentID() {
+        return studentID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void registerCourse(Course course) {
+        if (course.registerStudent(studentID)) {
+            registeredCourses.add(course);
+            System.out.println("Successfully registered for " + course.getTitle());
+        } else {
+            System.out.println("Course " + course.getTitle() + " is full. Registration failed.");
+        }
+    }
+
+    public void dropCourse(Course course) {
+        if (registeredCourses.contains(course)) {
+            course.dropStudent(studentID);
+            registeredCourses.remove(course);
+            System.out.println("Successfully dropped " + course.getTitle());
+        } else {
+            System.out.println("You are not registered in " + course.getTitle());
+        }
+    }
+
+    public void displayRegisteredCourses() {
+        System.out.println("Registered Courses for " + name + ":");
+        if (registeredCourses.isEmpty()) {
+            System.out.println("No courses registered.");
+        } else {
+            for (Course course : registeredCourses) {
+                System.out.println("- " + course.getTitle() + " (" + course.getCourseCode() + ")");
+            }
+        }
+        System.out.println("--------------------------");
+    }
+}
+
+// Main class to manage the Course Database and Student Database
+public class CourseManagementSystem {
+    private HashMap<String, Course> courseDatabase;
+    private HashMap<String, Student> studentDatabase;
+
+    public CourseManagementSystem() {
+        courseDatabase = new HashMap<>();
+        studentDatabase = new HashMap<>();
+    }
+
+    public void addCourse(Course course) {
+        courseDatabase.put(course.getCourseCode(), course);
+    }
+
+    public void addStudent(Student student) {
+        studentDatabase.put(student.getStudentID(), student);
+    }
+
+    public void displayAvailableCourses() {
+        System.out.println("Available Courses:");
+        for (Course course : courseDatabase.values()) {
+            course.displayCourseDetails();
+        }
+    }
+
+    public Course getCourse(String courseCode) {
+        return courseDatabase.get(courseCode);
+    }
+
+    public Student getStudent(String studentID) {
+        return studentDatabase.get(studentID);
+    }
+
+    public static void main(String[] args) {
+        CourseManagementSystem cms = new CourseManagementSystem();
+
+        // Adding some courses
+        cms.addCourse(new Course("CSE", "Introduction to Computer Science", "Basic principles of computer science.", 3, "Mon-Wed-Fri 9:00-10:00 AM"));
+        cms.addCourse(new Course("Java", "Introduction to Java", "Oop's Through Java", 2, "Tue-Thu 11:00 AM-12:30 PM"));
+        cms.addCourse(new Course("DBMS", "Introduction to DBMS", "About MYSQL", 4, "Mon-Wed-Fri 10:00-11:00 AM"));
+
+        // Adding a student
+        Student student1 = new Student("S1001", "Ramana Saka");
+        cms.addStudent(student1);
+
+        // Interface for student actions
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+
+        do {
+            System.out.println("\n--- Course Management System ---");
+            System.out.println("1. Display Available Courses");
+            System.out.println("2. Register for a Course");
+            System.out.println("3. Drop a Course");
+            System.out.println("4. Display Registered Courses");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+            choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    cms.displayAvailableCourses();
+                    break;
+                case 2:
+                    System.out.print("Enter Course Code to register: ");
+                    String courseCodeToRegister = scanner.next();
+                    Course courseToRegister = cms.getCourse(courseCodeToRegister);
+                    if (courseToRegister != null) {
+                        student1.registerCourse(courseToRegister);
+                    } else {
+                        System.out.println("Course not found.");
+                    }
+                    break;
+                case 3:
+                    System.out.print("Enter Course Code to drop: ");
+                    String courseCodeToDrop = scanner.next();
+                    Course courseToDrop = cms.getCourse(courseCodeToDrop);
+                    if (courseToDrop != null) {
+                        student1.dropCourse(courseToDrop);
+                    } else {
+                        System.out.println("Course not found.");
+                    }
+                    break;
+                case 4:
+                    student1.displayRegisteredCourses();
+                    break;
+                case 5:
+                    System.out.println("Thank you for using the Course Management System. Goodbye!");
+                    break;
+                default:
+                    System.out.println("Invalid choice! Please try again.");
+            }
+        } while (choice != 5);
+
+        scanner.close();
+    }
+}
+
+
